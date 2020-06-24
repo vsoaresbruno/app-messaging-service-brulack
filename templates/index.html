@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1>{{username}}</h1>
+<div class="row mb-3">
+  <div class="col-md-4 themed-grid-col">
+    <div class="alert alert-warning" role="alert" id="alert" style="display: none;"></div>
+    <form action="" id="create_channel">
+      <div class="input-group input-group-sm mb-3">
+        <input type="text" class="form-control" name="channel_name" id="channel_name" placeholder="Create new channel" aria-label="Recipient's username" aria-describedby="button-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-outline-primary" type="submit" id="button-addon2">Ok</button>
+          </div>
+      </div>
+    </form>
+    <ul class="list-group" id="channels">
+      {% for channel in channels %}
+        <li class="list-group-item" data-channel="{{channel}}">#{{channel}}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="col-md-8 themed-grid-col" >
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page" id="title_channel">Home</li>
+      </ol>
+    </nav>
+    <div id="chat-js"></div>
+    <form action="" id="new_message">
+      <input type="hidden" name="channel_name" id="message_channel" value=""/>
+      <textarea name="message" id="message" class="form-control" cols="30" rows="2"></textarea>
+      <button type="submit" class="btn btn-dark">Enviar</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
