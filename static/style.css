@@ -1,0 +1,6 @@
+.container {
+  margin: 30px auto;
+}
+.list-group-item {
+  cursor: pointer;
+}
