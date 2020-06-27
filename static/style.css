@@ -4,3 +4,22 @@
 .list-group-item {
   cursor: pointer;
 }
+.message-item {
+  position: relative;
+}
+
+.message-item:hover {
+  background: #f7f8f9;
+}
+
+.message-item .message-hour {
+  color: #6f777e;
+  font-size: 13px;
+}
+
+.delete_message {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+}

@@ -1,4 +1,4 @@
-import os, time, datetime
+import os, time, datetime, uuid
 
 from flask import Flask, render_template, session, request, redirect, url_for, jsonify
 from flask_socketio import SocketIO, emit
@@ -37,6 +37,20 @@ def channel(channel_name):
         chats = channels[name]
     return jsonify(chats)
 
+
+@socketio.on("delete message")
+def delete_message(data):
+    message_id = data["message_id"]
+    channel_name = data["channel_name"]
+    list_messages = channels[f'{channel_name}']
+
+    for m in range(len(list_messages)):
+        if list_messages[m]['id'] == message_id:
+            del list_messages[m]
+            emit("deleted message", message_id, broadcast=True)
+            break
+
+
 @socketio.on("send message")
 def send_message(data):
     name = session['name']
@@ -44,7 +58,9 @@ def send_message(data):
     channel_name = data["channel_name"]
     ts = time.time()
     timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    m = {'message': message, 'user': name, 'timestamp': timestamp, 'channel': channel_name}
+    id = uuid.uuid1()
+    
+    m = {'id': id.hex, 'message': message, 'user': name, 'timestamp': timestamp, 'channel': channel_name}
     list_messages = channels[f'{channel_name}']
 
     if len(list_messages) == 100:
