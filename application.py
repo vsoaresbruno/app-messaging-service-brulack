@@ -22,6 +22,7 @@ def login():
     if request.method == "POST":
         name = request.form.get("name")
         session['name'] = name
+        print(session['name'])
 
         return redirect(url_for('index'))
 
@@ -40,9 +41,9 @@ def delete_message(data):
     channel_name = data["channel_name"]
     list_messages = channels[f'{channel_name}']
 
-    for m in range(len(list_messages)):
-        if list_messages[m]['id'] == message_id:
-            del list_messages[m]
+    for message in range(len(list_messages)):
+        if list_messages[message]['id'] == message_id:
+            del list_messages[message]
             emit("deleted message", message_id, broadcast=True)
             break
 
@@ -56,15 +57,15 @@ def send_message(data):
     timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
     id = uuid.uuid1()
     
-    m = {'id': id.hex, 'message': message, 'user': name, 'timestamp': timestamp, 'channel': channel_name}
+    chat_message = {'id': id.hex, 'message': message, 'user': name, 'timestamp': timestamp, 'channel': channel_name}
     list_messages = channels[f'{channel_name}']
 
     if len(list_messages) == 100:
         list_messages.pop(0)
 
-    list_messages.append(m)
+    list_messages.append(chat_message)
 
-    emit("new message", m, broadcast=True)
+    emit("new message", chat_message, broadcast=True)
 
 @socketio.on("create channel")
 def create_channel(channel_name):
