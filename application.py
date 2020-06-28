@@ -22,7 +22,6 @@ def login():
     if request.method == "POST":
         name = request.form.get("name")
         session['name'] = name
-        print(session['name'])
 
         return redirect(url_for('index'))
 
