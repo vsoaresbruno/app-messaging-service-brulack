@@ -30,11 +30,8 @@ def login():
 
 @app.route("/channel/<string:channel_name>", methods=["GET"])
 def channel(channel_name):
-    name = f'{channel_name}'
-    chats = channels[name]
+    chats = channels[channel_name]
 
-    if len(channels[name]) > 0 :
-        chats = channels[name]
     return jsonify(chats)
 
 
@@ -77,7 +74,6 @@ def create_channel(channel_name):
         channels[channel_name]=[]
         return emit("new channel", {'channel_name':channel_name}, broadcast=True)
 
-    print("NOUP")
     message = "That name is already taken by a channel."
     emit("channel already taken", message)
 
